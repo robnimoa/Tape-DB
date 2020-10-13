@@ -2,11 +2,11 @@
        program-id. Tape-Film-DB.
        data division.
        working-storage section.
-       01  anzahl                               pic 9999. 
-       01  ix                                   pic 9999.
-       01  sucher                               pic 9999.
+       01  anzahl                               pic 9(5). 
+       01  ix                                   pic 9(4).
+       01  sucher                               pic 9(4).
        01  film-db.
-               03  film-tabelle occurs 37 times.
+               03  film-tabelle occurs 9999 times.
                        05  film-name            pic x(20).
                        05  film-jahr            pic 9(4).
                        05  film-beschreibung    pic x(100).
@@ -139,12 +139,12 @@
         exit.
 
        anzahl-ermitteln section.
-           move zeros to anzahl
-           perform inspect film-db tallying anzahl
+        move zeros to anzahl
+        perform inspect film-db tallying anzahl
                 for all zeroes
-           end-perform
-           divide anzahl by 4 giving anzahl 
-           exit.
+        end-perform
+        divide anzahl by 4 giving anzahl 
+        exit.
            
        falsche-eingabe section.
         display "Keine gültige Menüauswahl."
