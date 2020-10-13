@@ -1,12 +1,12 @@
        identification division.
-       program-id. FilmDB.
+       program-id. Tape-Film-DB.
        data division.
        working-storage section.
-       01  anzahl                               pic 9999 value 42. 
+       01  anzahl                               pic 9999. 
        01  ix                                   pic 9999.
        01  sucher                               pic 9999.
        01  film-db.
-               03  film-tabelle occurs 42 times.
+               03  film-tabelle occurs 37 times.
                        05  film-name            pic x(20).
                        05  film-jahr            pic 9(4).
                        05  film-beschreibung    pic x(100).
@@ -17,6 +17,7 @@
        01  zaehler                              pic 9.
        procedure division.
        beginn section.
+        perform anzahl-ermitteln
         display "Willkommen in der Filmdatenbank".
         perform until eingabe-menu-beenden
                 perform menu-zeigen
@@ -27,13 +28,13 @@
        menu-zeigen section.
         display "Hauptmenue"
         display "Was wollen Sie machen?"
-        display "1) Alle "anzahl" Filme anzeigen"
+        display "1) Alle "anzahl" Filme anzeigen."
         display "2) Alle "anzahl" Filme neu anlegen. Duplikate"
-        &" erlaubt"
+                &" erlaubt."
         display "3) Filme einzeln anlegen. Duplikate nicht erlaubt."
-        display "4) Löschen eines Filmes"
-        display "5) Sortieren nach Erscheinungsjahr (absteigend)"
-        display "6) Sortieren nach Namen (absteigend)"
+        display "4) Löschen eines Filmes."
+        display "5) Sortieren nach Erscheinungsjahr. (absteigend)"
+        display "6) Sortieren nach Namen. (absteigend)"
         display "9) Das Programm beenden."
         move zero to eingabe-zeichen.
         accept eingabe-zeichen.
@@ -81,7 +82,7 @@
                 accept film-beschreibung(ix)
         end-perform.
         exit.
-
+                        
        film-einzeln-anlegen section.
         move zero to ix
         display "Welchen Film möchten Sie ändern? Nr. eingeben."
@@ -105,7 +106,7 @@
                         perform film-nicht-vorhanden
                 end-if
         exit.
-           
+
        film-nicht-vorhanden section.
         move pruefer-name to film-name(ix)
         display "Geben Sie das Erscheiungsjahr ein. JJJJ"
@@ -128,7 +129,7 @@
         move space to film-beschreibung(ix)
         display "Filmnr.: "ix " ist gelöscht."
         exit.
-
+            
        film-sortieren-jahr section.
         sort film-tabelle
         on descending key film-jahr
@@ -139,6 +140,14 @@
         on ascending key film-name
         exit.
 
+       anzahl-ermitteln section.
+           move zeros to anzahl
+           perform inspect film-db tallying anzahl
+                for all zeroes
+           end-perform
+           divide anzahl by 4 giving anzahl 
+           exit.
+           
        falsche-eingabe section.
         display "Keine gültige Menüauswahl."
         exit.
