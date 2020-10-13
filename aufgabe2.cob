@@ -89,7 +89,7 @@
         accept ix
         if ix > anzahl
                 display "Maximal erlaubt sind: " anzahl
-                perform beginn               
+                exit
         else
                 display "Geben Sie den Filmnamen ein."
                 display "Filmnummer:" ix
@@ -101,7 +101,8 @@
                         for all pruefer-name
                 end-perform
                 if zaehler is not zero
-                        perform film-vorhanden
+                        display "Film ist bereits in der Datenbank"
+                        exit
                 else
                         perform film-nicht-vorhanden
                 end-if
@@ -114,16 +115,13 @@
         display "Geben Sie eine Filmbeschreibung ein."
         accept film-beschreibung(ix)
         exit.
-
-       film-vorhanden section.
-        display "Film ist bereits in der Datenbank"
-        perform beginn
-        exit.
-
+                
        film-loeschen section.
-        display "Welchen Film möchten Sie löschen?"
         move zero to ix
-        accept ix
+        perform until ix > 0 and ix <= anzahl
+                display "Welchen Film möchten Sie löschen?"
+                accept ix
+        end-perform
         move space to film-name(ix)
         move zero to film-jahr(ix)
         move space to film-beschreibung(ix)
