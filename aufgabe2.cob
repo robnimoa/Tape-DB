@@ -6,7 +6,7 @@
        01  ix                                   pic 9(4).
        01  sucher                               pic 9(4).
        01  film-db.
-               03  film-tabelle occurs 9999 times.
+               03  film-tabelle occurs 73 times.
                        05  film-name            pic x(20).
                        05  film-jahr            pic 9(4).
                        05  film-beschreibung    pic x(100).
@@ -18,7 +18,7 @@
        procedure division.
        beginn section.
         perform anzahl-ermitteln
-        display "Willkommen in der Filmdatenbank".
+        display "Willkommen in der Filmdatenbank"
         perform until eingabe-menu-beenden
                 perform menu-zeigen
                 perform menu-eingabe-auswerten
@@ -36,20 +36,20 @@
         display "5) Sortieren nach Erscheinungsjahr. (absteigend)"
         display "6) Sortieren nach Namen. (absteigend)"
         display "9) Das Programm beenden."
-        move zero to eingabe-zeichen.
-        accept eingabe-zeichen.
+        move zero to eingabe-zeichen
+        accept eingabe-zeichen
         exit.
 
        menu-eingabe-auswerten section.
-        evaluate eingabe-zeichen
-                when "1" perform filmliste-zeigen
-                when "2" perform film-anlegen
-                when "3" perform film-einzeln-anlegen
-                when "4" perform film-loeschen
-                when "5" perform film-sortieren-jahr
-                when "6" perform film-sortieren-name
-                when "9" set eingabe-menu-beenden to true
-                when other perform falsche-eingabe
+        evaluate true
+                when eingabe-zeichen = "1" perform filmliste-zeigen
+                when eingabe-zeichen = "2" perform film-anlegen
+                when eingabe-zeichen = "3" perform film-einzeln-anlegen
+                when eingabe-zeichen = "4" perform film-loeschen
+                when eingabe-zeichen = "5" perform film-sortieren-jahr
+                when eingabe-zeichen = "6" perform film-sortieren-name
+                when eingabe-zeichen = "9" set eingabe-menu-beenden 
+                        to true
         end-evaluate
         exit.
 
@@ -67,28 +67,29 @@
                 display "Geben Sie den Namen ein (max. 20 Zeichen)"
                 display "Filmnummer: "ix
                 accept film-name(ix)
-        end-perform.
+        end-perform
 
         perform varying ix from 1 by 1 until ix > anzahl
                 display "Geben Sie das Jahr ein im Format JJJJ ein."
                 display "Filmnummer: "ix
                 accept film-jahr(ix)
-        end-perform.
+        end-perform
 
         perform varying ix from 1 by 1 until ix > anzahl
                 display "Geben Sie eine Beschreibung ein(max. 100 Zeich"
                 &"en)"
                 display "Filmnummer: "ix
                 accept film-beschreibung(ix)
-        end-perform.
+        end-perform
         exit.
                         
        film-einzeln-anlegen section.
         move zero to ix
         display "Welchen Film möchten Sie ändern? Nr. eingeben."
         accept ix
-        if ix > anzahl
+        if ix > anzahl or ix <= 0
                 display "Maximal erlaubt sind: " anzahl
+                display "Bitte eine Zahl eingeben, die größer 0 ist."
                 exit
         else
                 display "Geben Sie den Filmnamen ein."
@@ -96,6 +97,7 @@
                 move spaces to pruefer-name
                 accept pruefer-name
                 move zero to sucher
+                move zero to zaehler
                 perform varying sucher from 1 by 1 until sucher > anzahl
                         inspect film-name(sucher) tallying zaehler 
                         for all pruefer-name
@@ -106,6 +108,7 @@
                 else
                         perform film-nicht-vorhanden
                 end-if
+        end-if
         exit.
 
        film-nicht-vorhanden section.
@@ -141,11 +144,7 @@
        anzahl-ermitteln section.
         move zeros to anzahl
         perform inspect film-db tallying anzahl
-                for all zeroes
+                for all characters
         end-perform
-        divide anzahl by 4 giving anzahl 
-        exit.
-           
-       falsche-eingabe section.
-        display "Keine gültige Menüauswahl."
+        divide anzahl by 124 giving anzahl 
         exit.
