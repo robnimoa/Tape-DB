@@ -17,7 +17,7 @@
        01  zaehler                              pic 9.
        procedure division.
        beginn section.
-        perform anzahl-ermitteln
+        divide length of film-db by length of film-tabelle giving anzahl
         display "Willkommen in der Filmdatenbank"
         perform until eingabe-menu-beenden
                 perform menu-zeigen
@@ -139,10 +139,4 @@
        film-sortieren-name section.
         sort film-tabelle
         on ascending key film-name
-        exit.
-
-       anzahl-ermitteln section.
-        move length of film-db to anzahl
-        move length of film-tabelle to sucher
-        divide anzahl by sucher giving anzahl.
         exit.
